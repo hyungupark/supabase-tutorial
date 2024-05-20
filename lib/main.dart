@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:whose_turn/config.dart';
 
 void main() async {
   await Supabase.initialize(
-    url: 'https://saikugnjchkclkhadkzj.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhaWt1Z25qY2hrY2xraGFka3pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU5NTE0NDcsImV4cCI6MjAzMTUyNzQ0N30.W-PziExFFobbqob5NLhI0SDzD7oXfPiZsWI6TAbwN30',
+    url: Config.supabaseUrl,
+    anonKey: Config.supabaseAnonKey,
   );
   runApp(const MyApp());
 }
