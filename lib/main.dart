@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  await Supabase.initialize(
+    url: 'https://saikugnjchkclkhadkzj.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhaWt1Z25qY2hrY2xraGFka3pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU5NTE0NDcsImV4cCI6MjAzMTUyNzQ0N30.W-PziExFFobbqob5NLhI0SDzD7oXfPiZsWI6TAbwN30',
+  );
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final supabase = Supabase.instance.client;
 
   // This widget is the root of your application.
   @override
