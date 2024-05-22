@@ -34,28 +34,33 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _future = Supabase.instance.client.from('countries').select();
+  final SupabaseClient supabase = Supabase.instance.client;
+  var countries = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    var data = await supabase.from('countries').select();
+    setState(() {
+      countries = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: _future,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          final countries = snapshot.data!;
-          return ListView.builder(
-            itemCount: countries.length,
-            itemBuilder: ((context, index) {
-              final country = countries[index];
-              return ListTile(
-                title: Text(country['name']),
-              );
-            }),
+      body: ListView.builder(
+        itemCount: countries.length,
+        itemBuilder: ((context, index) {
+          var country = countries[index];
+          return ListTile(
+            title: Text(country['name']),
           );
-        },
+        }),
       ),
     );
   }
