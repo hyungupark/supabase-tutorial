@@ -35,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final SupabaseClient supabase = Supabase.instance.client;
-  var countries = [];
+  List<Map<String, dynamic>> countries = [];
 
   @override
   void initState() {
@@ -44,10 +44,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void fetchData() async {
-    var data = await supabase.from('countries').select();
+    final List<Map<String, dynamic>> data =
+        await supabase.from('countries').select();
     setState(() {
       countries = data;
     });
+  }
+
+  void insertData() async {
+    await supabase.from("countries").insert({"name": "China"});
+    fetchData();
   }
 
   @override
@@ -56,11 +62,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView.builder(
         itemCount: countries.length,
         itemBuilder: ((context, index) {
-          var country = countries[index];
+          final Map<String, dynamic> country = countries[index];
           return ListTile(
             title: Text(country['name']),
           );
         }),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: insertData,
       ),
     );
   }
