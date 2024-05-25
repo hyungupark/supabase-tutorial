@@ -56,6 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
     fetchData();
   }
 
+  void updateData() async {
+    await supabase
+        .from('countries')
+        .update({'name': 'Japan'}).match({'name': 'China'});
+    fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: insertData,
+        onPressed: updateData,
       ),
     );
   }
