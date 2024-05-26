@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:whose_turn/config.dart';
+import "package:flutter/material.dart";
+import "package:supabase_flutter/supabase_flutter.dart";
+import "package:whose_turn/config.dart";
 
 void main() async {
   await Supabase.initialize(
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: "Flutter Demo",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void fetchData() async {
     final List<Map<String, dynamic>> data =
-        await supabase.from('countries').select();
+        await supabase.from("countries").select();
     setState(() {
       countries = data;
     });
@@ -58,8 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void updateData() async {
     await supabase
-        .from('countries')
-        .update({'name': 'Japan'}).match({'name': 'China'});
+        .from("countries")
+        .update({"name": "Japan"}).match({"name": "China"});
+    fetchData();
+  }
+
+  void deleteData() async {
+    await supabase.from("countries").delete().match({"name": "Japan"});
     fetchData();
   }
 
@@ -71,12 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: ((context, index) {
           final Map<String, dynamic> country = countries[index];
           return ListTile(
-            title: Text(country['name']),
+            title: Text(country["name"]),
           );
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: updateData,
+        onPressed: deleteData,
       ),
     );
   }
