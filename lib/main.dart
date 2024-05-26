@@ -68,6 +68,11 @@ class _MyHomePageState extends State<MyHomePage> {
     fetchData();
   }
 
+  void selectEqualTo() async {
+    final data = await supabase.from("countries").select().eq("name", "Korea");
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: deleteData,
+        onPressed: selectEqualTo,
       ),
     );
   }
