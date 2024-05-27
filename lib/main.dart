@@ -79,6 +79,11 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void selectGreaterThan() async {
+    final data = await supabase.from('countries').select().gt('id', 2);
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: selectNotEqualTo,
+        onPressed: selectGreaterThan,
       ),
     );
   }
