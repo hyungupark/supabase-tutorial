@@ -75,27 +75,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void selectNotEqualTo() async {
     final data =
-        await supabase.from('countries').select('name').neq('name', 'China');
+        await supabase.from("countries").select("name").neq("name", "China");
     print(data);
   }
 
   void selectGreaterThan() async {
-    final data = await supabase.from('countries').select().gt('id', 2);
+    final data = await supabase.from("countries").select().gt("id", 2);
     print(data);
   }
 
   void selectGreaterThanOrEqualTo() async {
-    final data = await supabase.from('countries').select().gte('id', 2);
+    final data = await supabase.from("countries").select().gte("id", 2);
     print(data);
   }
 
   void selectLessThan() async {
-    final data = await supabase.from('countries').select().lt('id', 2);
+    final data = await supabase.from("countries").select().lt("id", 2);
     print(data);
   }
 
   void selectLessThanOrEqualTo() async {
-    final data = await supabase.from('countries').select().lte('id', 2);
+    final data = await supabase.from("countries").select().lte("id", 2);
+    print(data);
+  }
+
+  void selectMatchPattern() async {
+    final data =
+        await supabase.from("countries").select().like("name", "%rea%");
     print(data);
   }
 
@@ -112,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: selectLessThanOrEqualTo,
+        onPressed: selectMatchPattern,
       ),
     );
   }
