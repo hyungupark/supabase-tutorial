@@ -111,6 +111,12 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void selectIsValue() async {
+    final data =
+        await supabase.from("countries").select().isFilter("name", null);
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,12 +125,12 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: ((context, index) {
           final Map<String, dynamic> country = countries[index];
           return ListTile(
-            title: Text(country["name"]),
+            title: Text(country["name"] ?? "NULL"),
           );
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: selectMatchCaseInsensitivePattern,
+        onPressed: selectIsValue,
       ),
     );
   }
