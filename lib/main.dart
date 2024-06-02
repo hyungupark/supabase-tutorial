@@ -105,6 +105,12 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void selectMatchCaseInsensitivePattern() async {
+    final data =
+        await supabase.from("countries").select().ilike("name", "%REA%");
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: selectMatchPattern,
+        onPressed: selectMatchCaseInsensitivePattern,
       ),
     );
   }
