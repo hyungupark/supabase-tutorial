@@ -117,6 +117,14 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void selectInArray() async {
+    final data = await supabase
+        .from("countries")
+        .select()
+        .inFilter("name", ["Korea", "Japan"]);
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: selectIsValue,
+        onPressed: selectInArray,
       ),
     );
   }
