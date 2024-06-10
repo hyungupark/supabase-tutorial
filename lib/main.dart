@@ -165,6 +165,14 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void lessThanOrEqualToARange() async {
+    final data = await supabase
+        .from("reservations")
+        .select()
+        .rangeLte("during", "[2000-01-01 15:00, 2000-01-01 16:00)");
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: lessThanARange,
+        onPressed: lessThanOrEqualToARange,
       ),
     );
   }
