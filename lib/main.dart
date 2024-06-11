@@ -173,6 +173,14 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void mutuallyExclusiveToARange() async {
+    final data = await supabase
+        .from("reservations")
+        .select()
+        .rangeAdjacent("during", "[2000-01-01 12:00, 2000-01-01 13:00)");
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: lessThanOrEqualToARange,
+        onPressed: mutuallyExclusiveToARange,
       ),
     );
   }
