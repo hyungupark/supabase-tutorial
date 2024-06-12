@@ -181,6 +181,14 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void withACommonElement() async {
+    final data = await supabase
+        .from("issues")
+        .select("title")
+        .overlaps("tags", ["is:closed", "severity:high"]);
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: mutuallyExclusiveToARange,
+        onPressed: withACommonElement,
       ),
     );
   }
