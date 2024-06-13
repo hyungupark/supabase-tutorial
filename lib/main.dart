@@ -197,6 +197,14 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void matchAnAssociatedValue() async {
+    final data = await supabase
+        .from("countries")
+        .select()
+        .match({"id": 4, "name": "Korea"});
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -210,7 +218,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: matchAString,
+        onPressed: matchAnAssociatedValue,
       ),
     );
   }
