@@ -189,6 +189,14 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void matchAString() async {
+    final data = await supabase
+        .from("texts")
+        .select("content")
+        .textSearch("content", "'eggs' & 'ham'", config: "english");
+    print(data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -202,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: withACommonElement,
+        onPressed: matchAString,
       ),
     );
   }
