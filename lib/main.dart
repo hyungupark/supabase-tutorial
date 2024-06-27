@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter/material.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
 import "package:whose_turn/config.dart";
@@ -35,20 +37,51 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final SupabaseClient supabase = Supabase.instance.client;
-  List<Map<String, dynamic>> countries = [];
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+
+    final StreamSubscription<AuthState> authSubscription =
+        supabase.auth.onAuthStateChange.listen((data) {
+      final AuthChangeEvent event = data.event;
+      final Session? session = data.session;
+
+      print('event: $event, session: $session');
+
+      switch (event) {
+        case AuthChangeEvent.initialSession:
+          // handle initial session
+          print("initial session");
+        case AuthChangeEvent.signedIn:
+          // handle signed in
+          print("signed in");
+        case AuthChangeEvent.signedOut:
+          // handle signed out
+          print("signed out");
+        case AuthChangeEvent.passwordRecovery:
+          // handle password recovery
+          print("password recovery");
+        case AuthChangeEvent.tokenRefreshed:
+          // handle token refreshed
+          print("token refreshed");
+        case AuthChangeEvent.userUpdated:
+          // handle user updated
+          print("user updated");
+        case AuthChangeEvent.userDeleted:
+          // handle user deleted
+          print("user deleted");
+        case AuthChangeEvent.mfaChallengeVerified:
+          // handle mfa challenge verified
+          print("mfa challenge verified");
+      }
+    });
   }
 
   void fetchData() async {
     final List<Map<String, dynamic>> data =
         await supabase.from("countries").select();
-    setState(() {
-      countries = data;
-    });
+    print(data);
   }
 
   void insertData() async {
@@ -291,15 +324,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: countries.length,
-        itemBuilder: ((context, index) {
-          final Map<String, dynamic> country = countries[index];
-          return ListTile(
-            title: Text(country["name"] ?? "NULL"),
-          );
-        }),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: createANewUser,
       ),
