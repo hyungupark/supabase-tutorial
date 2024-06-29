@@ -333,11 +333,22 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void signInAUser() async {
+    final AuthResponse res = await supabase.auth.signInWithPassword(
+      email: 'example@email.com',
+      password: 'example-password',
+    );
+    final Session? session = res.session;
+    final User? user = res.user;
+    print(session);
+    print(user);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: createAnAnonymousUser,
+        onPressed: signInAUser,
       ),
     );
   }
