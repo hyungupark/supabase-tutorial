@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Flutter Demo",
+      title: "Whose Turn",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -41,6 +41,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
+    supabase
+        .from("countries")
+        .stream(primaryKey: ["id"]).listen((List<Map<String, dynamic>> data) {
+      // Do something awesome with the data
+      print("stream.listen");
+      print(data);
+    });
 
     final StreamSubscription<AuthState> authSubscription =
         supabase.auth.onAuthStateChange.listen((data) {
@@ -92,8 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void updateData() async {
     await supabase
         .from("countries")
-        .update({"name": "Japan"}).match({"name": "China"});
-    fetchData();
+        .update({"name": "Taiwan"}).match({"name": "China"});
+    // fetchData();
   }
 
   void deleteData() async {
@@ -348,7 +356,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: signInAUser,
+        onPressed: updateData,
       ),
     );
   }
