@@ -50,6 +50,17 @@ class _MyHomePageState extends State<MyHomePage> {
       print(data);
     });
 
+    supabase
+        .channel("public:countries")
+        .onPostgresChanges(
+            event: PostgresChangeEvent.all,
+            schema: "public",
+            table: "countries",
+            callback: (payload) {
+              print("Change received: ${payload.toString()}");
+            })
+        .subscribe();
+
     final StreamSubscription<AuthState> authSubscription =
         supabase.auth.onAuthStateChange.listen((data) {
       final AuthChangeEvent event = data.event;
