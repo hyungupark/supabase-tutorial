@@ -377,11 +377,18 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void retrieveAllChannels() async {
+    final List<RealtimeChannel> channels = supabase.getChannels();
+    for (RealtimeChannel channel in channels) {
+      print(channel);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: unsubscribeFromAllChannels,
+        onPressed: retrieveAllChannels,
       ),
     );
   }
