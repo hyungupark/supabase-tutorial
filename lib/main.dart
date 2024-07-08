@@ -408,11 +408,16 @@ class _MyHomePageState extends State<MyHomePage> {
     print(res);
   }
 
+  void deleteABucket() async {
+    final String res = await supabase.storage.deleteBucket("avatars");
+    print(res);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: updateABucket,
+        onPressed: deleteABucket,
       ),
     );
   }
