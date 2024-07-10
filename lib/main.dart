@@ -1,5 +1,4 @@
 import "dart:async";
-import "dart:ui";
 
 import "package:flutter/material.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
@@ -413,11 +412,16 @@ class _MyHomePageState extends State<MyHomePage> {
     print(res);
   }
 
+  void emptyABucket() async {
+    final String res = await supabase.storage.emptyBucket('avatars');
+    print(res);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: deleteABucket,
+        onPressed: emptyABucket,
       ),
     );
   }
