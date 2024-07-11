@@ -1,4 +1,5 @@
 import "dart:async";
+import "dart:io";
 
 import "package:flutter/material.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
@@ -417,11 +418,21 @@ class _MyHomePageState extends State<MyHomePage> {
     print(res);
   }
 
+  void uploadAFile() async {
+    final avatarFile = File('path/to/file');
+    final String fullPath = await supabase.storage.from('avatars').upload(
+          'public/avatar1.png',
+          avatarFile,
+          fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+        );
+    print(fullPath);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: emptyABucket,
+        onPressed: uploadAFile,
       ),
     );
   }
