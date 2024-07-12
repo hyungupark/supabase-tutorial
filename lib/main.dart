@@ -1,5 +1,6 @@
 import "dart:async";
 import "dart:io";
+import "dart:typed_data";
 
 import "package:flutter/material.dart";
 import "package:supabase_flutter/supabase_flutter.dart";
@@ -428,11 +429,17 @@ class _MyHomePageState extends State<MyHomePage> {
     print(fullPath);
   }
 
+  void downloadAFile() async {
+    final Uint8List file =
+        await supabase.storage.from("avatars").download("avatar1.png");
+    print(file);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: uploadAFile,
+        onPressed: downloadAFile,
       ),
     );
   }
