@@ -435,11 +435,20 @@ class _MyHomePageState extends State<MyHomePage> {
     print(file);
   }
 
+  void listAllFilesInABucket() async {
+    final List<FileObject> objects =
+        await supabase.storage.from("avatars").list();
+    for (FileObject file in objects) {
+      print("{file.id: ${file.id}, file.name: ${file.name}}");
+      print(file.name);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: downloadAFile,
+        onPressed: listAllFilesInABucket,
       ),
     );
   }
