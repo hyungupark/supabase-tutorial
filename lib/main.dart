@@ -445,20 +445,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void replaceAnExistingFile() async {
-    final avatarFile = File('path/to/local/file');
-    final String path = await supabase.storage.from('avatars').update(
-          'public/avatar1.png',
+    final avatarFile = File("path/to/local/file");
+    final String path = await supabase.storage.from("avatars").update(
+          "public/avatar1.png",
           avatarFile,
-          fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+          fileOptions: const FileOptions(cacheControl: "3600", upsert: false),
         );
     print(path);
+  }
+
+  void moveAnExistingFile() async {
+    final String result = await supabase.storage
+        .from("avatars")
+        .move("public/avatar1.png", "private/avatar2.png");
+    print(result);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: replaceAnExistingFile,
+        onPressed: moveAnExistingFile,
       ),
     );
   }
