@@ -461,11 +461,19 @@ class _MyHomePageState extends State<MyHomePage> {
     print(result);
   }
 
+  void deleteFilesInABucket() async {
+    final List<FileObject> objects =
+        await supabase.storage.from("avatars").remove(["avatar1.png"]);
+    for (FileObject file in objects) {
+      print("{file.id: ${file.id}, file.name: ${file.name}}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: moveAnExistingFile,
+        onPressed: deleteFilesInABucket,
       ),
     );
   }
