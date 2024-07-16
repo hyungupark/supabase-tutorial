@@ -469,11 +469,18 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void createASignedURL() async {
+    final String signedUrl = await supabase.storage
+        .from("avatars")
+        .createSignedUrl("avatar1.png", 60);
+    print(signedUrl);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: deleteFilesInABucket,
+        onPressed: createASignedURL,
       ),
     );
   }
