@@ -476,11 +476,17 @@ class _MyHomePageState extends State<MyHomePage> {
     print(signedUrl);
   }
 
+  void retrievePublicURL() async {
+    final String publicUrl =
+        supabase.storage.from("avatars").getPublicUrl("avatar1.png");
+    print(publicUrl);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: createASignedURL,
+        onPressed: retrievePublicURL,
       ),
     );
   }
