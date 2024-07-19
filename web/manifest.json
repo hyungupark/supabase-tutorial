@@ -1,6 +1,6 @@
 {
-    "name": "whose_turn",
-    "short_name": "whose_turn",
+    "name": "flutter_supabase",
+    "short_name": "flutter_supabase",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

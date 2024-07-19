@@ -1,10 +1,10 @@
 import "dart:async";
-import "dart:io";
-import "dart:typed_data";
 
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:flutter_supabase/Config.dart";
+import 'package:google_sign_in/google_sign_in.dart';
 import "package:supabase_flutter/supabase_flutter.dart";
-import "package:whose_turn/config.dart";
 
 void main() async {
   await Supabase.initialize(
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Whose Turn",
+      title: "Flutter Demo",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -43,140 +43,100 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
-    supabase
-        .from("countries")
-        .stream(primaryKey: ["id"]).listen((List<Map<String, dynamic>> data) {
-      // Do something awesome with the data
-      print("stream.listen");
-      print(data);
-    });
-
-    supabase
-        .channel("public:countries")
-        .onPostgresChanges(
-            event: PostgresChangeEvent.all,
-            schema: "public",
-            table: "countries",
-            callback: (payload) {
-              print("Change received: ${payload.toString()}");
-            })
-        .subscribe();
-
-    final StreamSubscription<AuthState> authSubscription =
-        supabase.auth.onAuthStateChange.listen((data) {
-      final AuthChangeEvent event = data.event;
-      final Session? session = data.session;
-
-      print('event: $event, session: $session');
-
-      switch (event) {
-        case AuthChangeEvent.initialSession:
-          // handle initial session
-          print("initial session");
-        case AuthChangeEvent.signedIn:
-          // handle signed in
-          print("signed in");
-        case AuthChangeEvent.signedOut:
-          // handle signed out
-          print("signed out");
-        case AuthChangeEvent.passwordRecovery:
-          // handle password recovery
-          print("password recovery");
-        case AuthChangeEvent.tokenRefreshed:
-          // handle token refreshed
-          print("token refreshed");
-        case AuthChangeEvent.userUpdated:
-          // handle user updated
-          print("user updated");
-        case AuthChangeEvent.userDeleted:
-          // handle user deleted
-          print("user deleted");
-        case AuthChangeEvent.mfaChallengeVerified:
-          // handle mfa challenge verified
-          print("mfa challenge verified");
-      }
-    });
+    listenToAuthEvents();
   }
 
   void fetchData() async {
     final List<Map<String, dynamic>> data =
-        await supabase.from("countries").select();
+        await supabase.from("countries").select("name");
     print(data);
   }
 
   void insertData() async {
-    await supabase.from("countries").insert({"name": "China"});
-    fetchData();
+    final dynamic data =
+        await supabase.from("countries").insert({"name": "Japan"});
+    print(data);
   }
 
   void updateData() async {
-    await supabase
+    final List<Map<String, dynamic>> data = await supabase
         .from("countries")
-        .update({"name": "Taiwan"}).match({"name": "China"});
-    // fetchData();
+        .update({"name": "China"})
+        .eq("id", 5)
+        .select();
+    print(data);
+  }
+
+  void upsertData() async {
+    final List<Map<String, dynamic>> data = await supabase
+        .from("countries")
+        .upsert({"id": 1, "name": "Albania"}).select();
+    print(data);
   }
 
   void deleteData() async {
-    await supabase.from("countries").delete().match({"name": "Japan"});
-    fetchData();
-  }
-
-  void selectEqualTo() async {
     final List<Map<String, dynamic>> data =
-        await supabase.from("countries").select().eq("name", "Korea");
+        await supabase.from("countries").delete().eq("id", 1).select();
     print(data);
   }
 
-  void selectNotEqualTo() async {
+  void columnIsEqualToAValue() async {
     final List<Map<String, dynamic>> data =
-        await supabase.from("countries").select("name").neq("name", "China");
+        await supabase.from("countries").select().eq("name", "Japan");
     print(data);
   }
 
-  void selectGreaterThan() async {
+  void columnIsNotEqualToAValue() async {
+    final List<Map<String, dynamic>> data = await supabase
+        .from("countries")
+        .select("id, name")
+        .neq("name", "Japan");
+    print(data);
+  }
+
+  void columnIsGreaterThanAValue() async {
     final List<Map<String, dynamic>> data =
         await supabase.from("countries").select().gt("id", 2);
     print(data);
   }
 
-  void selectGreaterThanOrEqualTo() async {
+  void columnIsGreaterThanOrEqualToAValue() async {
     final List<Map<String, dynamic>> data =
         await supabase.from("countries").select().gte("id", 2);
     print(data);
   }
 
-  void selectLessThan() async {
+  void columnIsLessThanAValue() async {
     final List<Map<String, dynamic>> data =
         await supabase.from("countries").select().lt("id", 2);
     print(data);
   }
 
-  void selectLessThanOrEqualTo() async {
+  void columnIsLessThanOrEqualToAValue() async {
     final List<Map<String, dynamic>> data =
         await supabase.from("countries").select().lte("id", 2);
     print(data);
   }
 
-  void selectMatchPattern() async {
+  void columnMatchesAPattern() async {
     final List<Map<String, dynamic>> data =
-        await supabase.from("countries").select().like("name", "%rea%");
+        await supabase.from("countries").select().like("name", "%apa%");
     print(data);
   }
 
-  void selectMatchCaseInsensitivePattern() async {
+  void columnMatchesACaseInsensitivePattern() async {
     final List<Map<String, dynamic>> data =
-        await supabase.from("countries").select().ilike("name", "%REA%");
+        await supabase.from("countries").select().ilike("name", "%aPa%");
     print(data);
   }
 
-  void selectIsValue() async {
+  void columnIsAValue() async {
     final List<Map<String, dynamic>> data =
         await supabase.from("countries").select().isFilter("name", null);
     print(data);
   }
 
-  void selectInArray() async {
+  void columnIsInAnArray() async {
     final List<Map<String, dynamic>> data = await supabase
         .from("countries")
         .select()
@@ -184,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
-  void containsEveryElementInValue() async {
+  void columnContainsEveryElementInAValue() async {
     final List<Map<String, dynamic>> data = await supabase
         .from("issues")
         .select()
@@ -260,11 +220,11 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<Map<String, dynamic>> data = await supabase
         .from("countries")
         .select()
-        .match({"id": 4, "name": "Korea"});
+        .match({"id": 11, "name": "Japan"});
     print(data);
   }
 
-  void dontMatchTheFilter() async {
+  void doNotMatchTheFilter() async {
     final List<Map<String, dynamic>> data =
         await supabase.from("countries").select().not("name", "is", null);
     print(data);
@@ -273,8 +233,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void matchAtLeastOneFilter() async {
     final List<Map<String, dynamic>> data = await supabase
         .from("countries")
-        .select("name")
-        .or("id.eq.2,name.eq.Algeria");
+        .select("id, name")
+        .or("id.eq.11,name.eq.Korea");
     print(data);
   }
 
@@ -329,7 +289,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void retrieveAsACSV() async {
-    final String data = await supabase.from("countries").select().csv();
+    final dynamic data = await supabase.from('countries').select().csv();
     print(data);
   }
 
@@ -340,153 +300,180 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void createANewUser() async {
     final AuthResponse res = await supabase.auth.signUp(
-      email: 'example@email.com',
-      password: 'example-password',
+      email: Config.email,
+      password: Config.password,
     );
     final Session? session = res.session;
     final User? user = res.user;
-    print(session);
-    print(user);
+    print("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
+  }
+
+  void listenToAuthEvents() async {
+    final StreamSubscription<AuthState> authSubscription =
+        supabase.auth.onAuthStateChange.listen((AuthState data) {
+      final AuthChangeEvent event = data.event;
+      final Session? session = data.session;
+
+      print('event: $event, session: $session');
+
+      switch (event) {
+        case AuthChangeEvent.initialSession:
+          // handle initial session
+          print("AuthChangeEvent.initialSession");
+        case AuthChangeEvent.signedIn:
+          // handle signed in
+          print("AuthChangeEvent.signedIn");
+        case AuthChangeEvent.signedOut:
+          // handle signed out
+          print("AuthChangeEvent.signedOut");
+        case AuthChangeEvent.passwordRecovery:
+          // handle password recovery
+          print("AuthChangeEvent.passwordRecovery");
+        case AuthChangeEvent.tokenRefreshed:
+          // handle token refreshed
+          print("AuthChangeEvent.tokenRefreshed");
+        case AuthChangeEvent.userUpdated:
+          // handle user updated
+          print("AuthChangeEvent.userUpdated");
+        case AuthChangeEvent.userDeleted:
+          // handle user deleted
+          print("AuthChangeEvent.userDeleted");
+        case AuthChangeEvent.mfaChallengeVerified:
+          // handle mfa challenge verified
+          print("AuthChangeEvent.mfaChallengeVerified");
+      }
+    });
   }
 
   void createAnAnonymousUser() async {
-    final AuthResponse data = await supabase.auth.signInAnonymously();
-    print(data);
+    final AuthResponse res = await supabase.auth.signInAnonymously();
+    final Session? session = res.session;
+    final User? user = res.user;
+    print("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
   }
 
   void signInAUser() async {
     final AuthResponse res = await supabase.auth.signInWithPassword(
-      email: 'example@email.com',
-      password: 'example-password',
+      email: Config.email,
+      password: Config.password,
     );
     final Session? session = res.session;
     final User? user = res.user;
-    print(session);
-    print(user);
+    print("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
   }
 
-  void unsubscribeFromAChannel() async {
-    final String status =
-        await supabase.removeChannel(supabase.channel("public:countries"));
-    print(status);
-  }
+  void signInWithIdToken() async {
+    const String webClientId = Config.webClientId;
+    const String iosClientId = Config.iosClientId;
 
-  void unsubscribeFromAllChannels() async {
-    final List<String> statuses = await supabase.removeAllChannels();
-    for (String status in statuses) {
-      print(status);
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      clientId: iosClientId,
+      serverClientId: webClientId,
+    );
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+    final String? accessToken = googleAuth.accessToken;
+    final String? idToken = googleAuth.idToken;
+
+    if (accessToken == null) {
+      throw 'No Access Token found.';
     }
-  }
-
-  void retrieveAllChannels() async {
-    final List<RealtimeChannel> channels = supabase.getChannels();
-    for (RealtimeChannel channel in channels) {
-      print(channel);
+    if (idToken == null) {
+      throw 'No ID Token found.';
     }
+
+    final AuthResponse response = await supabase.auth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: idToken,
+      accessToken: accessToken,
+    );
+
+    final Session? session = response.session;
+    final User? user = response.user;
+    print("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
   }
 
-  void createABucket() async {
-    final String bucketId = await supabase.storage.createBucket('avatars');
-    print(bucketId);
+  void signInAUserThroughOTP() async {
+    await supabase.auth.signInWithOtp(
+      email: Config.email,
+      emailRedirectTo: kIsWeb ? null : Config.signInCallback,
+    );
   }
 
-  void retrieveABucket() async {
-    final Bucket bucket = await supabase.storage.getBucket("avatars");
-    print("{bucket.id: ${bucket.id}, bucket.name: ${bucket.name}}");
-  }
-
-  void listAllBuckets() async {
-    final List<Bucket> buckets = await supabase.storage.listBuckets();
-    print("buckets.length = ${buckets.length}");
-    for (Bucket bucket in buckets) {
-      print("{bucket.id: ${bucket.id}, bucket.name: ${bucket.name}}");
-    }
-  }
-
-  void updateABucket() async {
-    final String res = await supabase.storage
-        .updateBucket("avatars", const BucketOptions(public: false));
-    print(res);
-  }
-
-  void deleteABucket() async {
-    final String res = await supabase.storage.deleteBucket("avatars");
-    print(res);
-  }
-
-  void emptyABucket() async {
-    final String res = await supabase.storage.emptyBucket('avatars');
-    print(res);
-  }
-
-  void uploadAFile() async {
-    final avatarFile = File('path/to/file');
-    final String fullPath = await supabase.storage.from('avatars').upload(
-          'public/avatar1.png',
-          avatarFile,
-          fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
-        );
-    print(fullPath);
-  }
-
-  void downloadAFile() async {
-    final Uint8List file =
-        await supabase.storage.from("avatars").download("avatar1.png");
-    print(file);
-  }
-
-  void listAllFilesInABucket() async {
-    final List<FileObject> objects =
-        await supabase.storage.from("avatars").list();
-    for (FileObject file in objects) {
-      print("{file.id: ${file.id}, file.name: ${file.name}}");
-      print(file.name);
-    }
-  }
-
-  void replaceAnExistingFile() async {
-    final avatarFile = File("path/to/local/file");
-    final String path = await supabase.storage.from("avatars").update(
-          "public/avatar1.png",
-          avatarFile,
-          fileOptions: const FileOptions(cacheControl: "3600", upsert: false),
-        );
-    print(path);
-  }
-
-  void moveAnExistingFile() async {
-    final String result = await supabase.storage
-        .from("avatars")
-        .move("public/avatar1.png", "private/avatar2.png");
+  void signInAUserThroughOAuth() async {
+    final bool result =
+        await supabase.auth.signInWithOAuth(OAuthProvider.github);
     print(result);
   }
 
-  void deleteFilesInABucket() async {
-    final List<FileObject> objects =
-        await supabase.storage.from("avatars").remove(["avatar1.png"]);
-    for (FileObject file in objects) {
-      print("{file.id: ${file.id}, file.name: ${file.name}}");
+  void signInAUserThroughSSO() async {
+    final bool result = await supabase.auth.signInWithSSO(
+      domain: Config.domain,
+    );
+    print(result);
+  }
+
+  void signOutAUser() async {
+    await supabase.auth.signOut();
+  }
+
+  void verifyAndLogInThroughOTP() async {
+    final AuthResponse res = await supabase.auth.verifyOTP(
+      type: OtpType.signup,
+      token: Config.token,
+      phone: Config.phone,
+    );
+    final Session? session = res.session;
+    final User? user = res.user;
+    print("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
+  }
+
+  void retrieveASession() async {
+    final Session? session = supabase.auth.currentSession;
+    print("session: ${session ?? "null"}");
+  }
+
+  void retrieveANewSession() async {
+    final AuthResponse res = await supabase.auth.refreshSession();
+    final Session? session = res.session;
+    print("session: ${session ?? "null"}");
+  }
+
+  void retrieveAUser() async {
+    final User? user = supabase.auth.currentUser;
+    print("user: ${user ?? "null"}");
+  }
+
+  void updateAUser() async {
+    final UserResponse res = await supabase.auth.updateUser(
+      UserAttributes(
+        email: Config.email,
+      ),
+    );
+    final User? updatedUser = res.user;
+    print("user: ${updatedUser ?? "null"}");
+  }
+
+  void retrieveIdentitiesLinkedToAUser() async {
+    final List<UserIdentity> identities =
+        await supabase.auth.getUserIdentities();
+    for (UserIdentity identity in identities) {
+      print(
+          "{ identity.id: ${identity.id}, identity.identityId: ${identity.identityId}, identity.userId: ${identity.userId} }");
     }
   }
 
-  void createASignedURL() async {
-    final String signedUrl = await supabase.storage
-        .from("avatars")
-        .createSignedUrl("avatar1.png", 60);
-    print(signedUrl);
-  }
-
-  void retrievePublicURL() async {
-    final String publicUrl =
-        supabase.storage.from("avatars").getPublicUrl("avatar1.png");
-    print(publicUrl);
+  void linkAnIdentityToAUser() async {
+    final bool data = await supabase.auth.linkIdentity(OAuthProvider.google);
+    print(data);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: retrievePublicURL,
+        onPressed: linkAnIdentityToAUser,
       ),
     );
   }

@@ -1,4 +1,4 @@
-package com.whoseturn.whose_turn
+package com.example.flutter_supabase
 
 import io.flutter.embedding.android.FlutterActivity
 

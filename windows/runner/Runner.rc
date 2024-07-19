@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.whoseturn" "\0"
-            VALUE "FileDescription", "whose_turn" "\0"
+            VALUE "CompanyName", "com.example" "\0"
+            VALUE "FileDescription", "flutter_supabase" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "whose_turn" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.whoseturn. All rights reserved." "\0"
-            VALUE "OriginalFilename", "whose_turn.exe" "\0"
-            VALUE "ProductName", "whose_turn" "\0"
+            VALUE "InternalName", "flutter_supabase" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "flutter_supabase.exe" "\0"
+            VALUE "ProductName", "flutter_supabase" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
