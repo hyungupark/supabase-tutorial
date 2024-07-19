@@ -459,8 +459,13 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<UserIdentity> identities =
         await supabase.auth.getUserIdentities();
     for (UserIdentity identity in identities) {
-      print(
-          "{ identity.id: ${identity.id}, identity.identityId: ${identity.identityId}, identity.userId: ${identity.userId} }");
+      print("""
+        { 
+          identity.id: ${identity.id}, 
+          identity.identityId: ${identity.identityId}, 
+          identity.userId: ${identity.userId},
+        }
+      """);
     }
   }
 
@@ -469,11 +474,32 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void unlinkAnIdentityFromAUser() async {
+    // retrieve all identites linked to a user
+    final List<UserIdentity> identities =
+        await supabase.auth.getUserIdentities();
+
+    // find the google identity
+    final UserIdentity googleIdentity = identities.firstWhere(
+      (element) => element.provider == "google",
+    );
+    print("""
+      { 
+        googleIdentity.id: ${googleIdentity.id}, 
+        googleIdentity.identityId: ${googleIdentity.identityId}, 
+        googleIdentity.userId: ${googleIdentity.userId},
+      }
+    """);
+
+    // unlink the google identity
+    await supabase.auth.unlinkIdentity(googleIdentity);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: linkAnIdentityToAUser,
+        onPressed: unlinkAnIdentityFromAUser,
       ),
     );
   }
