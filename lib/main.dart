@@ -495,11 +495,15 @@ class _MyHomePageState extends State<MyHomePage> {
     await supabase.auth.unlinkIdentity(googleIdentity);
   }
 
+  void sendAPasswordReauthenticationNonce() async {
+    await supabase.auth.reauthenticate();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: unlinkAnIdentityFromAUser,
+        onPressed: sendAPasswordReauthenticationNonce,
       ),
     );
   }
