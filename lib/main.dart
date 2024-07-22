@@ -499,11 +499,19 @@ class _MyHomePageState extends State<MyHomePage> {
     await supabase.auth.reauthenticate();
   }
 
+  void resendAnOTP() async {
+    final ResendResponse res = await supabase.auth.resend(
+      type: OtpType.email,
+      email: Config.email,
+    );
+    print(res.messageId ?? "null");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: sendAPasswordReauthenticationNonce,
+        onPressed: resendAnOTP,
       ),
     );
   }
