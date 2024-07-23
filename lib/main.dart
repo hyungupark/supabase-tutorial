@@ -515,11 +515,18 @@ class _MyHomePageState extends State<MyHomePage> {
     print("session: ${session ?? "null"}");
   }
 
+  void enrollAFactor() async {
+    final AuthMFAEnrollResponse res =
+        await supabase.auth.mfa.enroll(factorType: FactorType.totp);
+    final String qrCodeUrl = res.totp.qrCode;
+    print(qrCodeUrl);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: setTheSessionData,
+        onPressed: enrollAFactor,
       ),
     );
   }
