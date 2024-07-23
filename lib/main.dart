@@ -507,11 +507,19 @@ class _MyHomePageState extends State<MyHomePage> {
     print(res.messageId ?? "null");
   }
 
+  void setTheSessionData() async {
+    final String refreshToken =
+        supabase.auth.currentSession?.refreshToken ?? "";
+    final AuthResponse response = await supabase.auth.setSession(refreshToken);
+    final Session? session = response.session;
+    print("session: ${session ?? "null"}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: resendAnOTP,
+        onPressed: setTheSessionData,
       ),
     );
   }
