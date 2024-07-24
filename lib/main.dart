@@ -522,11 +522,19 @@ class _MyHomePageState extends State<MyHomePage> {
     print(qrCodeUrl);
   }
 
+  void createAChallenge() async {
+    final AuthMFAChallengeResponse res = await supabase.auth.mfa.challenge(
+      factorId: Config.factorId,
+    );
+    print("res.id: ${res.id}");
+    print("res.expiresAt: ${res.expiresAt}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: enrollAFactor,
+        onPressed: createAChallenge,
       ),
     );
   }
