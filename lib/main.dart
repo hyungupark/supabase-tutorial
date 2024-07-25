@@ -530,11 +530,31 @@ class _MyHomePageState extends State<MyHomePage> {
     print("res.expiresAt: ${res.expiresAt}");
   }
 
+  void verifyAChallenge() async {
+    final AuthMFAVerifyResponse res = await supabase.auth.mfa.verify(
+      factorId: Config.factorId,
+      challengeId: Config.challengeId,
+      code: Config.code,
+    );
+    print("res.user.id: ${res.user.id}");
+    print("res.user.email: ${res.user.email}");
+  }
+
+  void createAndVerifyAChallenge() async {
+    final AuthMFAVerifyResponse res =
+        await supabase.auth.mfa.challengeAndVerify(
+      factorId: Config.factorId,
+      code: Config.code,
+    );
+    print("res.user.id: ${res.user.id}");
+    print("res.user.email: ${res.user.email}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: createAChallenge,
+        onPressed: createAndVerifyAChallenge,
       ),
     );
   }
