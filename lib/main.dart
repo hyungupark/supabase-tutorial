@@ -557,11 +557,26 @@ class _MyHomePageState extends State<MyHomePage> {
     print("res.id: ${res.id}");
   }
 
+  void getAuthenticatorAssuranceLevel() async {
+    final AuthMFAGetAuthenticatorAssuranceLevelResponse res =
+        supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    final AuthenticatorAssuranceLevels? currentLevel = res.currentLevel;
+    print("currentLevel.name: ${currentLevel?.name ?? "null"}");
+    final AuthenticatorAssuranceLevels? nextLevel = res.nextLevel;
+    print("nextLevel.name: ${nextLevel?.name ?? "null"}");
+    final List<AMREntry> currentAuthenticationMethods =
+        res.currentAuthenticationMethods;
+    for (AMREntry currentAuthenticationMethod in currentAuthenticationMethods) {
+      print(
+          "currentAuthenticationMethod.method: ${currentAuthenticationMethod.method}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: unenrollAFactor,
+        onPressed: getAuthenticatorAssuranceLevel,
       ),
     );
   }
