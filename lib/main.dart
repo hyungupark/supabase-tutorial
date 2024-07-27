@@ -550,11 +550,18 @@ class _MyHomePageState extends State<MyHomePage> {
     print("res.user.email: ${res.user.email}");
   }
 
+  void unenrollAFactor() async {
+    final AuthMFAUnenrollResponse res = await supabase.auth.mfa.unenroll(
+      Config.factorId,
+    );
+    print("res.id: ${res.id}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: createAndVerifyAChallenge,
+        onPressed: unenrollAFactor,
       ),
     );
   }
