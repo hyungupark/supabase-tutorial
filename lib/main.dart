@@ -572,11 +572,18 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void authAdmin() async {
+    final SupabaseClient supabase =
+        SupabaseClient(Config.supabaseUrl, Config.serviceRoleKey);
+    final User? user = supabase.auth.currentUser;
+    print("user.id: ${user?.id ?? "null"}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: getAuthenticatorAssuranceLevel,
+        onPressed: authAdmin,
       ),
     );
   }
