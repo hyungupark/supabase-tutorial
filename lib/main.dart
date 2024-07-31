@@ -586,11 +586,19 @@ class _MyHomePageState extends State<MyHomePage> {
     print("user.id: ${user?.id ?? "null"}");
   }
 
+  void listAllUsers() async {
+    // Returns the first 50 users.
+    final List<User> users = await supabase.auth.admin.listUsers();
+    for (User user in users) {
+      print("user.id: ${user.id}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: adminRetrieveAUser,
+        onPressed: listAllUsers,
       ),
     );
   }
