@@ -606,11 +606,15 @@ class _MyHomePageState extends State<MyHomePage> {
     print("user.email: ${user?.email ?? "null"}");
   }
 
+  void deleteAUser() async {
+    await supabase.auth.admin.deleteUser(Config.userId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: createAUser,
+        onPressed: deleteAUser,
       ),
     );
   }
