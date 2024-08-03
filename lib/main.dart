@@ -618,11 +618,21 @@ class _MyHomePageState extends State<MyHomePage> {
     print("user.email: ${user?.email ?? "null"}");
   }
 
+  void generateAnEmailLink() async {
+    final GenerateLinkResponse res = await supabase.auth.admin.generateLink(
+      type: GenerateLinkType.signup,
+      email: Config.email,
+      password: Config.password,
+    );
+    final String actionLink = res.properties.actionLink;
+    print("actionLink: $actionLink");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: sendAnEmailInviteLink,
+        onPressed: generateAnEmailLink,
       ),
     );
   }
