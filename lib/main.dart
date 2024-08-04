@@ -628,11 +628,20 @@ class _MyHomePageState extends State<MyHomePage> {
     print("actionLink: $actionLink");
   }
 
+  void adminUpdateAUser() async {
+    await supabase.auth.admin.updateUserById(
+      Config.userId,
+      attributes: AdminUserAttributes(
+        email: Config.email,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: generateAnEmailLink,
+        onPressed: adminUpdateAUser,
       ),
     );
   }
