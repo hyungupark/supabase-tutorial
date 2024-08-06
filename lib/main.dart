@@ -646,11 +646,22 @@ class _MyHomePageState extends State<MyHomePage> {
     print(data);
   }
 
+  void listenToDatabaseChanges() async {
+    supabase.from("countries").stream(primaryKey: ["id"]).listen(
+      (List<Map<String, dynamic>> data) {
+        // Do something awesome with the data
+        for (Map<String, dynamic> value in data) {
+          print(value);
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: invokesASupabaseEdgeFunction,
+        onPressed: listenToDatabaseChanges,
       ),
     );
   }
