@@ -693,11 +693,18 @@ class _MyHomePageState extends State<MyHomePage> {
     print("status: $status");
   }
 
+  void unsubscribeFromAllChannels() async {
+    final List<String> statuses = await supabase.removeAllChannels();
+    for (String status in statuses) {
+      print("status: $status");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: unsubscribeFromAChannel,
+        onPressed: unsubscribeFromAllChannels,
       ),
     );
   }
