@@ -700,11 +700,31 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void retrieveAllChannels() async {
+    final List<RealtimeChannel> channels = supabase.getChannels();
+    for (RealtimeChannel channel in channels) {
+      channel
+          .onPostgresChanges(
+              event: PostgresChangeEvent.all,
+              schema: "public",
+              table: "countries",
+              callback: (payload) {
+                print("Change received: ${payload.toString()}");
+              })
+          .onBroadcast(
+              event: "cursor-pos",
+              callback: (payload) {
+                print("Cursor position received: $payload");
+              })
+          .subscribe();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: unsubscribeFromAllChannels,
+        onPressed: retrieveAllChannels,
       ),
     );
   }
