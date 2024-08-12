@@ -47,236 +47,298 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void fetchData() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select("name");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void insertData() async {
     final dynamic data =
         await supabase.from("countries").insert({"name": "Japan"});
-    print(data);
+    debugPrint(data);
   }
 
   void updateData() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("countries")
         .update({"name": "China"})
         .eq("id", 5)
         .select();
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void upsertData() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("countries")
         .upsert({"id": 1, "name": "Albania"}).select();
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void deleteData() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").delete().eq("id", 1).select();
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnIsEqualToAValue() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select().eq("name", "Japan");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnIsNotEqualToAValue() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("countries")
         .select("id, name")
         .neq("name", "Japan");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnIsGreaterThanAValue() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select().gt("id", 2);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnIsGreaterThanOrEqualToAValue() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select().gte("id", 2);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnIsLessThanAValue() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select().lt("id", 2);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnIsLessThanOrEqualToAValue() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select().lte("id", 2);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnMatchesAPattern() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select().like("name", "%apa%");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnMatchesACaseInsensitivePattern() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select().ilike("name", "%aPa%");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnIsAValue() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select().isFilter("name", null);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnIsInAnArray() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("countries")
         .select()
         .inFilter("name", ["Korea", "Japan"]);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void columnContainsEveryElementInAValue() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("issues")
         .select()
         .contains("tags", ["is:open", "priority:low"]);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void containedByValue() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("classes")
         .select("name")
         .containedBy("days", ["monday", "tuesday", "wednesday", "friday"]);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void greaterThanARange() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("reservations")
         .select()
         .rangeGt("during", "[2000-01-02 08:00, 2000-01-02 09:00)");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void greaterThanOrEqualToARange() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("reservations")
         .select()
         .rangeGte("during", "[2000-01-02 08:30, 2000-01-02 09:30)");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void lessThanARange() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("reservations")
         .select()
         .rangeLt("during", "[2000-01-01 15:00, 2000-01-01 16:00)");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void lessThanOrEqualToARange() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("reservations")
         .select()
         .rangeLte("during", "[2000-01-01 15:00, 2000-01-01 16:00)");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void mutuallyExclusiveToARange() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("reservations")
         .select()
         .rangeAdjacent("during", "[2000-01-01 12:00, 2000-01-01 13:00)");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void withACommonElement() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("issues")
         .select("title")
         .overlaps("tags", ["is:closed", "severity:high"]);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void matchAString() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("texts")
         .select("content")
         .textSearch("content", "\"eggs\" & \"ham\"", config: "english");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void matchAnAssociatedValue() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("countries")
         .select()
         .match({"id": 11, "name": "Japan"});
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void doNotMatchTheFilter() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select().not("name", "is", null);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void matchAtLeastOneFilter() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("countries")
         .select("id, name")
         .or("id.eq.11,name.eq.Korea");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void matchTheFilter() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("countries")
         .select()
         .filter("name", "in", "(\"Korea\",\"Japan\")");
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void returnDataAfterInserting() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("countries")
         .upsert({"id": 1, "name": "Algeria"}).select();
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void orderTheResults() async {
-    final List<Map<String, dynamic>> data = await supabase
+    final List<Map<String, dynamic>> dataList = await supabase
         .from("countries")
         .select("id, name")
         .order("id", ascending: false);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void limitTheNumberOfRowsReturned() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select("name").limit(1);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void limitTheQueryToARange() async {
-    final List<Map<String, dynamic>> data =
+    final List<Map<String, dynamic>> dataList =
         await supabase.from("countries").select("name").range(0, 1);
-    print(data);
+    for (Map<String, dynamic> data in dataList) {
+      debugPrint("name: ${data["name"]}");
+    }
   }
 
   void retrieveOneRowOfData() async {
     final Map<String, dynamic> data =
         await supabase.from("countries").select("name").limit(1).single();
-    print(data);
+    debugPrint("name: ${data["name"]}");
   }
 
   void retrieveZeroOrOneRowOfData() async {
@@ -285,17 +347,17 @@ class _MyHomePageState extends State<MyHomePage> {
         .select()
         .eq("name", "Singapore")
         .maybeSingle();
-    print(data);
+    debugPrint("name: ${data?["name"] ?? "null"}");
   }
 
   void retrieveAsACSV() async {
     final dynamic data = await supabase.from('countries').select().csv();
-    print(data);
+    debugPrint(data);
   }
 
   void usingExplain() async {
     final String data = await supabase.from("countries").select().explain();
-    print(data);
+    debugPrint(data);
   }
 
   void createANewUser() async {
@@ -305,7 +367,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     final Session? session = res.session;
     final User? user = res.user;
-    print("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
+    debugPrint("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
   }
 
   void listenToAuthEvents() async {
@@ -314,33 +376,33 @@ class _MyHomePageState extends State<MyHomePage> {
       final AuthChangeEvent event = data.event;
       final Session? session = data.session;
 
-      print('event: $event, session: $session');
+      debugPrint('event: $event, session: $session');
 
       switch (event) {
         case AuthChangeEvent.initialSession:
           // handle initial session
-          print("AuthChangeEvent.initialSession");
+          debugPrint("AuthChangeEvent.initialSession");
         case AuthChangeEvent.signedIn:
           // handle signed in
-          print("AuthChangeEvent.signedIn");
+          debugPrint("AuthChangeEvent.signedIn");
         case AuthChangeEvent.signedOut:
           // handle signed out
-          print("AuthChangeEvent.signedOut");
+          debugPrint("AuthChangeEvent.signedOut");
         case AuthChangeEvent.passwordRecovery:
           // handle password recovery
-          print("AuthChangeEvent.passwordRecovery");
+          debugPrint("AuthChangeEvent.passwordRecovery");
         case AuthChangeEvent.tokenRefreshed:
           // handle token refreshed
-          print("AuthChangeEvent.tokenRefreshed");
+          debugPrint("AuthChangeEvent.tokenRefreshed");
         case AuthChangeEvent.userUpdated:
           // handle user updated
-          print("AuthChangeEvent.userUpdated");
+          debugPrint("AuthChangeEvent.userUpdated");
         case AuthChangeEvent.userDeleted:
           // handle user deleted
-          print("AuthChangeEvent.userDeleted");
+          debugPrint("AuthChangeEvent.userDeleted");
         case AuthChangeEvent.mfaChallengeVerified:
           // handle mfa challenge verified
-          print("AuthChangeEvent.mfaChallengeVerified");
+          debugPrint("AuthChangeEvent.mfaChallengeVerified");
       }
     });
   }
@@ -349,7 +411,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final AuthResponse res = await supabase.auth.signInAnonymously();
     final Session? session = res.session;
     final User? user = res.user;
-    print("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
+    debugPrint("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
   }
 
   void signInAUser() async {
@@ -359,7 +421,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     final Session? session = res.session;
     final User? user = res.user;
-    print("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
+    debugPrint("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
   }
 
   void signInWithIdToken() async {
@@ -391,7 +453,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final Session? session = response.session;
     final User? user = response.user;
-    print("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
+    debugPrint("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
   }
 
   void signInAUserThroughOTP() async {
@@ -404,14 +466,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void signInAUserThroughOAuth() async {
     final bool result =
         await supabase.auth.signInWithOAuth(OAuthProvider.github);
-    print(result);
+    debugPrint(result.toString());
   }
 
   void signInAUserThroughSSO() async {
     final bool result = await supabase.auth.signInWithSSO(
       domain: Config.domain,
     );
-    print(result);
+    debugPrint(result.toString());
   }
 
   void signOutAUser() async {
@@ -426,23 +488,23 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     final Session? session = res.session;
     final User? user = res.user;
-    print("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
+    debugPrint("{ session: ${session ?? "null"}, user: ${user ?? "null"} }");
   }
 
   void retrieveASession() async {
     final Session? session = supabase.auth.currentSession;
-    print("session: ${session ?? "null"}");
+    debugPrint("session: ${session ?? "null"}");
   }
 
   void retrieveANewSession() async {
     final AuthResponse res = await supabase.auth.refreshSession();
     final Session? session = res.session;
-    print("session: ${session ?? "null"}");
+    debugPrint("session: ${session ?? "null"}");
   }
 
   void retrieveAUser() async {
     final User? user = supabase.auth.currentUser;
-    print("user: ${user ?? "null"}");
+    debugPrint("user: ${user ?? "null"}");
   }
 
   void updateAUser() async {
@@ -452,14 +514,14 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
     final User? updatedUser = res.user;
-    print("user: ${updatedUser ?? "null"}");
+    debugPrint("user: ${updatedUser ?? "null"}");
   }
 
   void retrieveIdentitiesLinkedToAUser() async {
     final List<UserIdentity> identities =
         await supabase.auth.getUserIdentities();
     for (UserIdentity identity in identities) {
-      print("""
+      debugPrint("""
         { 
           identity.id: ${identity.id}, 
           identity.identityId: ${identity.identityId}, 
@@ -471,7 +533,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void linkAnIdentityToAUser() async {
     final bool data = await supabase.auth.linkIdentity(OAuthProvider.google);
-    print(data);
+    debugPrint(data.toString());
   }
 
   void unlinkAnIdentityFromAUser() async {
@@ -483,7 +545,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final UserIdentity googleIdentity = identities.firstWhere(
       (element) => element.provider == "google",
     );
-    print("""
+    debugPrint("""
       { 
         googleIdentity.id: ${googleIdentity.id}, 
         googleIdentity.identityId: ${googleIdentity.identityId}, 
@@ -504,7 +566,7 @@ class _MyHomePageState extends State<MyHomePage> {
       type: OtpType.email,
       email: Config.email,
     );
-    print(res.messageId ?? "null");
+    debugPrint(res.messageId ?? "null");
   }
 
   void setTheSessionData() async {
@@ -512,22 +574,22 @@ class _MyHomePageState extends State<MyHomePage> {
         supabase.auth.currentSession?.refreshToken ?? "";
     final AuthResponse response = await supabase.auth.setSession(refreshToken);
     final Session? session = response.session;
-    print("session: ${session ?? "null"}");
+    debugPrint("session: ${session ?? "null"}");
   }
 
   void enrollAFactor() async {
     final AuthMFAEnrollResponse res =
         await supabase.auth.mfa.enroll(factorType: FactorType.totp);
     final String qrCodeUrl = res.totp.qrCode;
-    print(qrCodeUrl);
+    debugPrint(qrCodeUrl);
   }
 
   void createAChallenge() async {
     final AuthMFAChallengeResponse res = await supabase.auth.mfa.challenge(
       factorId: Config.factorId,
     );
-    print("res.id: ${res.id}");
-    print("res.expiresAt: ${res.expiresAt}");
+    debugPrint("res.id: ${res.id}");
+    debugPrint("res.expiresAt: ${res.expiresAt}");
   }
 
   void verifyAChallenge() async {
@@ -536,8 +598,8 @@ class _MyHomePageState extends State<MyHomePage> {
       challengeId: Config.challengeId,
       code: Config.code,
     );
-    print("res.user.id: ${res.user.id}");
-    print("res.user.email: ${res.user.email}");
+    debugPrint("res.user.id: ${res.user.id}");
+    debugPrint("res.user.email: ${res.user.email}");
   }
 
   void createAndVerifyAChallenge() async {
@@ -546,28 +608,28 @@ class _MyHomePageState extends State<MyHomePage> {
       factorId: Config.factorId,
       code: Config.code,
     );
-    print("res.user.id: ${res.user.id}");
-    print("res.user.email: ${res.user.email}");
+    debugPrint("res.user.id: ${res.user.id}");
+    debugPrint("res.user.email: ${res.user.email}");
   }
 
   void unenrollAFactor() async {
     final AuthMFAUnenrollResponse res = await supabase.auth.mfa.unenroll(
       Config.factorId,
     );
-    print("res.id: ${res.id}");
+    debugPrint("res.id: ${res.id}");
   }
 
   void getAuthenticatorAssuranceLevel() async {
     final AuthMFAGetAuthenticatorAssuranceLevelResponse res =
         supabase.auth.mfa.getAuthenticatorAssuranceLevel();
     final AuthenticatorAssuranceLevels? currentLevel = res.currentLevel;
-    print("currentLevel.name: ${currentLevel?.name ?? "null"}");
+    debugPrint("currentLevel.name: ${currentLevel?.name ?? "null"}");
     final AuthenticatorAssuranceLevels? nextLevel = res.nextLevel;
-    print("nextLevel.name: ${nextLevel?.name ?? "null"}");
+    debugPrint("nextLevel.name: ${nextLevel?.name ?? "null"}");
     final List<AMREntry> currentAuthenticationMethods =
         res.currentAuthenticationMethods;
     for (AMREntry currentAuthenticationMethod in currentAuthenticationMethods) {
-      print(
+      debugPrint(
           "currentAuthenticationMethod.method: ${currentAuthenticationMethod.method}");
     }
   }
@@ -576,21 +638,21 @@ class _MyHomePageState extends State<MyHomePage> {
     final SupabaseClient supabase =
         SupabaseClient(Config.supabaseUrl, Config.serviceRoleKey);
     final User? user = supabase.auth.currentUser;
-    print("user.id: ${user?.id ?? "null"}");
+    debugPrint("user.id: ${user?.id ?? "null"}");
   }
 
   void adminRetrieveAUser() async {
     final UserResponse res =
         await supabase.auth.admin.getUserById(Config.userId);
     final User? user = res.user;
-    print("user.id: ${user?.id ?? "null"}");
+    debugPrint("user.id: ${user?.id ?? "null"}");
   }
 
   void listAllUsers() async {
     // Returns the first 50 users.
     final List<User> users = await supabase.auth.admin.listUsers();
     for (User user in users) {
-      print("user.id: ${user.id}");
+      debugPrint("user.id: ${user.id}");
     }
   }
 
@@ -602,8 +664,8 @@ class _MyHomePageState extends State<MyHomePage> {
       userMetadata: {'name': 'Yoda'},
     ));
     final User? user = res.user;
-    print("user.id: ${user?.id ?? "null"}");
-    print("user.email: ${user?.email ?? "null"}");
+    debugPrint("user.id: ${user?.id ?? "null"}");
+    debugPrint("user.email: ${user?.email ?? "null"}");
   }
 
   void deleteAUser() async {
@@ -614,8 +676,8 @@ class _MyHomePageState extends State<MyHomePage> {
     final UserResponse res =
         await supabase.auth.admin.inviteUserByEmail(Config.email);
     final User? user = res.user;
-    print("user.id: ${user?.id ?? "null"}");
-    print("user.email: ${user?.email ?? "null"}");
+    debugPrint("user.id: ${user?.id ?? "null"}");
+    debugPrint("user.email: ${user?.email ?? "null"}");
   }
 
   void generateAnEmailLink() async {
@@ -625,7 +687,7 @@ class _MyHomePageState extends State<MyHomePage> {
       password: Config.password,
     );
     final String actionLink = res.properties.actionLink;
-    print("actionLink: $actionLink");
+    debugPrint("actionLink: $actionLink");
   }
 
   void adminUpdateAUser() async {
@@ -643,15 +705,15 @@ class _MyHomePageState extends State<MyHomePage> {
       body: {"foo": "baa"},
     );
     final dynamic data = res.data;
-    print(data);
+    debugPrint(data);
   }
 
   void listenToDatabaseChanges() async {
     supabase.from("countries").stream(primaryKey: ["id"]).listen(
-      (List<Map<String, dynamic>> data) {
+      (List<Map<String, dynamic>> dataList) {
         // Do something awesome with the data
-        for (Map<String, dynamic> value in data) {
-          print(value);
+        for (Map<String, dynamic> data in dataList) {
+          debugPrint("name: ${data["name"]}");
         }
       },
     );
@@ -665,7 +727,7 @@ class _MyHomePageState extends State<MyHomePage> {
             schema: "public",
             table: "countries",
             callback: (payload) {
-              print("Change received: ${payload.toString()}");
+              debugPrint("Change received: ${payload.toString()}");
             })
         .subscribe();
     supabase
@@ -673,7 +735,7 @@ class _MyHomePageState extends State<MyHomePage> {
         .onBroadcast(
             event: "cursor-pos",
             callback: (payload) {
-              print("Cursor position received: $payload");
+              debugPrint("Cursor position received: $payload");
             })
         .subscribe();
   }
@@ -686,17 +748,17 @@ class _MyHomePageState extends State<MyHomePage> {
             schema: "public",
             table: "countries",
             callback: (payload) {
-              print("Change received: ${payload.toString()}");
+              debugPrint("Change received: ${payload.toString()}");
             })
         .subscribe();
     final String status = await supabase.removeChannel(channel);
-    print("status: $status");
+    debugPrint("status: $status");
   }
 
   void unsubscribeFromAllChannels() async {
     final List<String> statuses = await supabase.removeAllChannels();
     for (String status in statuses) {
-      print("status: $status");
+      debugPrint("status: $status");
     }
   }
 
@@ -709,22 +771,27 @@ class _MyHomePageState extends State<MyHomePage> {
               schema: "public",
               table: "countries",
               callback: (payload) {
-                print("Change received: ${payload.toString()}");
+                debugPrint("Change received: ${payload.toString()}");
               })
           .onBroadcast(
               event: "cursor-pos",
               callback: (payload) {
-                print("Cursor position received: $payload");
+                debugPrint("Cursor position received: $payload");
               })
           .subscribe();
     }
+  }
+
+  void createABucket() async {
+    final String bucketId = await supabase.storage.createBucket("avatars");
+    debugPrint("bucketId: $bucketId");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: retrieveAllChannels,
+        onPressed: createABucket,
       ),
     );
   }
