@@ -801,11 +801,17 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void updateABucket() async {
+    final String res = await supabase.storage
+        .updateBucket("avatars", const BucketOptions(public: false));
+    print("res: $res");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: listAllBuckets,
+        onPressed: updateABucket,
       ),
     );
   }
