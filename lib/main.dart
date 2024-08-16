@@ -804,14 +804,19 @@ class _MyHomePageState extends State<MyHomePage> {
   void updateABucket() async {
     final String res = await supabase.storage
         .updateBucket("avatars", const BucketOptions(public: false));
-    print("res: $res");
+    debugPrint("res: $res");
+  }
+
+  void deleteABucket() async {
+    final String res = await supabase.storage.deleteBucket("avatars");
+    debugPrint("res: $res");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: updateABucket,
+        onPressed: deleteABucket,
       ),
     );
   }
