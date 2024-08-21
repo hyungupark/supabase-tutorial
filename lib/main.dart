@@ -853,11 +853,18 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint("path: $path");
   }
 
+  void moveAnExistingFile() async {
+    final String result = await supabase.storage
+        .from("avatars")
+        .move("public/avatar1.png", "private/avatar2.png");
+    debugPrint("result: $result");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: replaceAnExistingFile,
+        onPressed: moveAnExistingFile,
       ),
     );
   }
