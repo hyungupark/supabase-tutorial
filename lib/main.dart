@@ -825,29 +825,39 @@ class _MyHomePageState extends State<MyHomePage> {
           avatarFile,
           fileOptions: const FileOptions(cacheControl: "3600", upsert: false),
         );
-    print("fullPath: $fullPath");
+    debugPrint("fullPath: $fullPath");
   }
 
   void downloadAFile() async {
     final Uint8List file =
         await supabase.storage.from("avatars").download("avatar1.png");
-    print("file.length: ${file.length}");
+    debugPrint("file.length: ${file.length}");
   }
 
   void listAllFilesInABucket() async {
     final List<FileObject> objects =
         await supabase.storage.from("avatars").list();
     for (FileObject object in objects) {
-      print("object.id: ${object.id ?? "null"}");
-      print("object.name: ${object.name}");
+      debugPrint("object.id: ${object.id ?? "null"}");
+      debugPrint("object.name: ${object.name}");
     }
+  }
+
+  void replaceAnExistingFile() async {
+    final avatarFile = File("assets/avatar.png");
+    final String path = await supabase.storage.from("avatars").update(
+          "public/avatar1.png",
+          avatarFile,
+          fileOptions: const FileOptions(cacheControl: "3600", upsert: false),
+        );
+    debugPrint("path: $path");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: listAllFilesInABucket,
+        onPressed: replaceAnExistingFile,
       ),
     );
   }
