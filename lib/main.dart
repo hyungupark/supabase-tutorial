@@ -860,11 +860,20 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint("result: $result");
   }
 
+  void deleteFilesInABucket() async {
+    final List<FileObject> objects =
+        await supabase.storage.from("avatars").remove(["avatar1.png"]);
+    for (FileObject object in objects) {
+      debugPrint("object.id: ${object.id ?? "null"}");
+      debugPrint("object.name: ${object.name}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: moveAnExistingFile,
+        onPressed: deleteFilesInABucket,
       ),
     );
   }
