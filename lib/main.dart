@@ -876,6 +876,12 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint("signedUrl: $signedUrl");
   }
 
+  void retrievePublicURL() async {
+    final String publicUrl =
+        supabase.storage.from("avatars").getPublicUrl("avatar1.png");
+    debugPrint("publicUrl: $publicUrl");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
